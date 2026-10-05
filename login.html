@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Help Desk - Login</title>
+  <style>
+    :root{--bg:#07111f;--panel:#0d1b2a;--border:#23364d;--text:#edf4fb;--muted:#91a5bb;--accent:#35bdf4;--shadow:0 18px 45px rgba(0,0,0,.25)}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:radial-gradient(circle at top right,#102a44 0,#07111f 38%,#050b14 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .login-panel{
+      background:rgba(13,27,42,.94);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:32px;
+      width:100%;
+      max-width:380px;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:12px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,#35bdf4,#2563eb);
+      font-weight:900;color:white;
+      margin:0 auto 16px;
+    }
+    h1{font-size:1.3rem;text-align:center;margin:0 0 6px}
+    p.subtitle{color:var(--muted);text-align:center;margin:0 0 24px;font-size:.9rem}
+    .field{display:grid;gap:6px;margin-bottom:16px}
+    .field label{font-size:.8rem;font-weight:700;color:#cbd9e6}
+    input{
+      width:100%;border:1px solid var(--border);
+      background:#081522;color:var(--text);
+      border-radius:9px;padding:10px 11px;outline:none;
+    }
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,189,244,.12)}
+    .error{color:#fecdd3;font-size:.8rem;min-height:18px;margin-bottom:8px}
+    button{
+      width:100%;border:none;border-radius:10px;
+      padding:11px 14px;font-weight:700;font-size:1rem;
+      background:var(--accent);color:#05253a;cursor:pointer;
+      transition:.18s;
+    }
+    button:hover{transform:translateY(-1px)}
+  </style>
+</head>
+<body>
+  <div class="login-panel">
+    <div class="logo">IT</div>
+    <h1>Help Desk Login</h1>
+    <p class="subtitle">Enter your credentials to access support</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" required placeholder="Enter your username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" required placeholder="Enter your password">
+      </div>
+      <div class="error" id="errorMsg"></div>
+      <button type="submit">Log In</button>
+    </form>
+  </div>
+
+  <script>
+    // Grab the form and error message box so we can work with them
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // Listen for the form being submitted
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // stop the page from reloading (default form behavior)
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // Basic check: just make sure both fields have something typed in
+      if (username === '' || password === '') {
+        errorMsg.textContent = 'Please enter both a username and password.';
+        return;
+      }
+
+      // Redirect to the IT support / ticket tracker page
+      window.location.href = 'contact.html';
+    });
+  </script>
+</body>
+</html>
