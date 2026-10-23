@@ -38,6 +38,10 @@
   <javascript>const { data, error } = await supabaseClient
     .from("tickets")
     .select("*");</javascript>
+  <javascript>const { data, error } = await supabaseClient
+    .from("tickets")
+    .select("*")
+    .eq("archived", false);</javascript>
 </head>
 <body>
 <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="logo">IT</div><div><h1>Help Desk Ticket Tracker</h1><p>Centralized support request management</p></div></div><div class="role-pill">Technician Dashboard • Capstone Prototype</div></div></header>
