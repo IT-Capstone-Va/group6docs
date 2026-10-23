@@ -23,6 +23,18 @@
     @media(max-width:1020px){.workspace{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.toolbar{grid-template-columns:1fr 1fr}.hero{align-items:flex-start;flex-direction:column}}
     @media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.toolbar,.row2,.ticket-grid{grid-template-columns:1fr}.ticket-top{flex-direction:column}.topbar-inner{align-items:flex-start}.role-pill{display:none}.ticket-actions{justify-content:stretch;flex-direction:column}.ticket-actions .btn{width:100%}}
   </style>
+  <javascript>const { data, error } = await supabaseClient
+    .from("tickets")
+    .insert([
+        {
+            requester_name: "Thomas Snyder",
+            title: "Computer will not start",
+            category: "Hardware",
+            description: "Computer does not power on",
+            priority: "High",
+            status: "Open"
+        }
+    ]);</javascript>
 </head>
 <body>
 <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="logo">IT</div><div><h1>Help Desk Ticket Tracker</h1><p>Centralized support request management</p></div></div><div class="role-pill">Technician Dashboard • Capstone Prototype</div></div></header>
