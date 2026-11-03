@@ -33,7 +33,9 @@ const pool = new Pool({
 });
 
 async function query() {
-  const res = await pool.query('SELECT NOW()');
+  const res = await pool.query('INSERT INTO tickets(requester_name, requester_email, title, category, description)
+VALUES(requester,requesterEmail,title,category,priority,description)
+RETURNING *;');
   console.log(res.rows[0]);
 }
   </javascript>
