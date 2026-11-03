@@ -39,7 +39,7 @@
   </section>
   <section class="workspace">
     <aside class="panel"><div class="panel-head"><h3>Create Support Ticket</h3><p>Record the employee's issue and business impact.</p></div><div class="panel-body">
-      <form id="ticketForm">
+      <form id="ticketForm" autocomplete="off">
         <div class="row2"><div class="field"><label for="requester">Requester Name</label><input id="requester" required placeholder="Jane Smith"></div><div class="field"><label for="requesterEmail">Email</label><input id="requesterEmail" type="email" placeholder="jane@company.com"></div></div>
         <div class="field"><label for="title">Ticket Title</label><input id="title" required maxlength="90" placeholder="Cannot access company email"></div>
         <div class="row2"><div class="field"><label for="category">Category</label><select id="category"><option>Hardware</option><option>Software</option><option>Network</option><option>Account / Login</option><option>Printer</option><option>Security</option><option>Other</option></select></div><div class="field"><label for="priority">Initial Priority</label><select id="priority"><option>Low</option><option selected>Medium</option><option>High</option></select></div></div>
@@ -96,9 +96,9 @@ document.getElementById('archiveToggle').addEventListener('click',()=>{const bod
 form.addEventListener('submit',async e=>{
  e.preventDefault();if(!ready||writing||!form.reportValidity())return;
  const value=id=>document.getElementById(id).value.trim();
- const payload={requester_name:value('requester'),requester_email:currentUser.email,title:value('title'),category:value('category'),description:value('description'),priority:value('priority')};
+ const payload={requester_name:value('requester'),requester_email:value('requesterEmail'),title:value('title'),category:value('category'),description:value('description'),priority:value('priority')};
  if(!payload.requester_name||!payload.title||!payload.description){showError('Please fill in your name, title, and description.');return;}
- await writeChange(async()=>{const {data,error}=await db.from('tickets').insert(payload).select('*').single();if(error)throw error;tickets.unshift(fromRow(data));form.reset();fillRequester();document.getElementById('priority').value='Medium';renderTickets();renderArchive();toast('Ticket saved to Supabase.');});
+ await writeChange(async()=>{const {data,error}=await db.from('tickets').insert(payload).select('*').single();if(error)throw error;tickets.unshift(fromRow(data));form.reset();document.getElementById('requester').value='';document.getElementById('requesterEmail').value='';document.getElementById('priority').value='Medium';renderTickets();renderArchive();toast('Ticket saved to Supabase.');});
 });
 [searchInput,filterStatus,filterPriority,sortBy].forEach(el=>{el.addEventListener('input',renderTickets);el.addEventListener('change',renderTickets)});
 
@@ -138,7 +138,7 @@ async function initialize(){
   document.querySelector('.hero h2').textContent=isTechnician?'Support Operations Dashboard':'My Support Tickets';
   document.querySelector('.count-line span:last-child').classList.add('technician-only');
   db.auth.onAuthStateChange((event,session)=>{if(!session){ready=false;tickets=[];renderTickets();renderArchive();window.location.replace('login.html');}});
-  fillRequester();await loadTickets();ready=true;document.getElementById('submit-support-ticket').disabled=false;
+  document.getElementById('requesterEmail').readOnly=false;await loadTickets();ready=true;document.getElementById('submit-support-ticket').disabled=false;
  }catch(error){showError('Unable to connect: '+error.message+' Refresh the page to try again.');}
 }
 initialize();
