@@ -64,18 +64,18 @@ body{padding:24px}.choices{display:flex;gap:8px;margin-bottom:24px}.choices butt
       <button type="button" id="loginChoice" aria-pressed="true">Log In</button>
       <button type="button" id="signupChoice" aria-pressed="false">Create Account</button>
     </div>
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="off">
       <div class="field hidden" id="nameField">
         <label for="fullName">Full name</label>
         <input id="fullName" autocomplete="name" maxlength="120">
       </div>
       <div class="field">
         <label for="email">Email address</label>
-        <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
+        <input id="email" type="email" autocomplete="off" required placeholder="you@example.com">
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="current-password" required>
+        <input id="password" type="password" autocomplete="off" required>
       </div>
       <div class="field hidden" id="confirmField">
         <label for="confirmPassword">Confirm password</label>
@@ -98,6 +98,15 @@ body{padding:24px}.choices{display:flex;gap:8px;margin-bottom:24px}.choices butt
     const form = byId('loginForm');
     const message = byId('message');
     const submitButton = byId('submitButton');
+    // Clear browser-restored field values on load and history navigation.
+    function clearLoginFields() {
+      form.reset();
+      ['fullName', 'email', 'password', 'confirmPassword'].forEach((id) => {
+        byId(id).value = '';
+      });
+    }
+    window.addEventListener('pageshow', clearLoginFields);
+    clearLoginFields();
 
     function setMode(signup) {
       if (busy) return;
@@ -111,7 +120,7 @@ body{padding:24px}.choices{display:flex;gap:8px;margin-bottom:24px}.choices butt
       byId('fullName').required = signup;
       byId('confirmPassword').required = signup;
       byId('password').minLength = signup ? 8 : 1;
-      byId('password').autocomplete = signup ? 'new-password' : 'current-password';
+      byId('password').autocomplete = signup ? 'new-password' : 'off';
       byId('password').value = '';
       byId('confirmPassword').value = '';
       message.textContent = '';
