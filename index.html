@@ -79,7 +79,7 @@ async function query() {
         <div class="field"><label for="title">Ticket Title</label><input id="title" required maxlength="90" placeholder="Cannot access company email"></div>
         <div class="row2"><div class="field"><label for="category">Category</label><select id="category"><option>Hardware</option><option>Software</option><option>Network</option><option>Account / Login</option><option>Printer</option><option>Security</option><option>Other</option></select></div><div class="field"><label for="priority">Initial Priority</label><select id="priority"><option>Low</option><option selected>Medium</option><option>High</option></select></div></div>
         <div class="field"><label for="description">Problem Description</label><textarea id="description" required placeholder="Describe what happened, any error messages, and how the issue affects your work."></textarea><div class="helper">Include enough detail for a technician to begin troubleshooting.</div></div>
-        <button class="btn btn-primary" type="submit">Submit Support Ticket</button>
+        <button id="submit-support-ticket" class="btn btn-primary" type="submit">Submit Support Ticket</button>
       </form>
     </div></aside>
     <section class="panel"><div class="panel-head"><h3>Ticket Dashboard</h3><p>Review active work, update ownership, and document progress. Resolved tickets are automatically archived.</p></div><div class="panel-body">
