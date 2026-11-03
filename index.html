@@ -23,6 +23,20 @@
     @media(max-width:1020px){.workspace{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.toolbar{grid-template-columns:1fr 1fr}.hero{align-items:flex-start;flex-direction:column}}
     @media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.toolbar,.row2,.ticket-grid{grid-template-columns:1fr}.ticket-top{flex-direction:column}.topbar-inner{align-items:flex-start}.role-pill{display:none}.ticket-actions{justify-content:stretch;flex-direction:column}.ticket-actions .btn{width:100%}}
   </style>
+
+  <javascript>
+    const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Replace with your Supabase Postgres URI
+  ssl: { rejectUnauthorized: false }
+});
+
+async function query() {
+  const res = await pool.query('SELECT NOW()');
+  console.log(res.rows[0]);
+}
+  </javascript>
   <javascript>const { data, error } = await supabaseClient
     .from("tickets")
     .insert([
