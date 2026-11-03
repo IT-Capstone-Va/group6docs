@@ -24,11 +24,11 @@
     @media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.toolbar,.row2,.ticket-grid{grid-template-columns:1fr}.ticket-top{flex-direction:column}.topbar-inner{align-items:flex-start}.role-pill{display:none}.ticket-actions{justify-content:stretch;flex-direction:column}.ticket-actions .btn{width:100%}}
   </style>
 
-  <javascript>
+  <javascript id="submit-support-ticket">
     const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Replace with your Supabase Postgres URI
+  connectionString: process.env.postgresql://postgres.klzwzbixcnmwzoxevtvd:Fujikki34?!@db.klzwzbixcnmwzoxevtvd.supabase.co:5432/postgres, // Replace with your Supabase Postgres URI
   ssl: { rejectUnauthorized: false }
 });
 
