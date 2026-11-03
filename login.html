@@ -8,7 +8,7 @@
     :root{--bg:#07111f;--panel:#0d1b2a;--border:#23364d;--text:#edf4fb;--muted:#91a5bb;--accent:#35bdf4;--shadow:0 18px 45px rgba(0,0,0,.25)}
     *{box-sizing:border-box}
     body{
-      margin:0;G
+      margin:0;
       font-family:Inter,Segoe UI,Arial,sans-serif;
       background:radial-gradient(circle at top right,#102a44 0,#07111f 38%,#050b14 100%);
       color:var(--text);
@@ -52,47 +52,139 @@
     }
     button:hover{transform:translateY(-1px)}
   </style>
-</head>
+<style>
+body{padding:24px}.choices{display:flex;gap:8px;margin-bottom:24px}.choices button{font-size:.88rem;background:#16283b;color:var(--text);border:1px solid var(--border)}.choices button[aria-pressed="true"]{background:var(--accent);color:#05253a}.hidden{display:none}.message{font-size:.85rem;line-height:1.5;margin:12px 0;color:#fecdd3}.message.success{color:#bbf7d0}button:disabled{opacity:.6;cursor:wait}.hint{color:var(--muted);font-size:.8rem;line-height:1.5}button:focus-visible{outline:2px solid white;outline-offset:3px}
+</style></head>
 <body>
-  <div class="login-panel">
-    <div class="logo">IT</div>
-    <h1>Help Desk Login</h1>
-    <p class="subtitle">Enter your credentials to access support</p>
-
+  <main class="login-panel">
+    <div class="logo" aria-hidden="true">IT</div>
+    <h1 id="heading">Help Desk Login</h1>
+    <p class="subtitle" id="subtitle">Log in to access support</p>
+    <div class="choices" role="group" aria-label="Account options">
+      <button type="button" id="loginChoice" aria-pressed="true">Log In</button>
+      <button type="button" id="signupChoice" aria-pressed="false">Create Account</button>
+    </div>
     <form id="loginForm">
+      <div class="field hidden" id="nameField">
+        <label for="fullName">Full name</label>
+        <input id="fullName" autocomplete="name" maxlength="120">
+      </div>
       <div class="field">
-        <label for="username">Username</label>
-        <input id="username" type="text" required placeholder="Enter your username">
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input id="password" type="password" required placeholder="Enter your password">
+        <input id="password" type="password" autocomplete="current-password" required>
       </div>
-      <div class="error" id="errorMsg"></div>
-      <button type="submit">Log In</button>
+      <div class="field hidden" id="confirmField">
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" type="password" autocomplete="new-password">
+        <span class="hint">Use at least 8 characters.</span>
+      </div>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <button type="submit" id="submitButton">Log In</button>
     </form>
-  </div>
-
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Grab the form and error message box so we can work with them
-    const form = document.getElementById('loginForm');
-    const errorMsg = document.getElementById('errorMsg');
+    // Only use a publishable key here, never a database password or secret key.
+    const SUPABASE_URL = 'https://bngvtntshxoxbwrrucfo.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
+    let client = null;
+    let creatingAccount = false;
+    let busy = false;
+    const byId = (id) => document.getElementById(id);
+    const form = byId('loginForm');
+    const message = byId('message');
+    const submitButton = byId('submitButton');
 
-    // Listen for the form being submitted
-    form.addEventListener('submit', function (e) {
-      e.preventDefault(); // stop the page from reloading (default form behavior)
+    function setMode(signup) {
+      if (busy) return;
+      creatingAccount = signup;
+      byId('heading').textContent = signup ? 'Create Your Account' : 'Help Desk Login';
+      byId('subtitle').textContent = signup ? 'Register to request IT support' : 'Log in to access support';
+      byId('loginChoice').setAttribute('aria-pressed', String(!signup));
+      byId('signupChoice').setAttribute('aria-pressed', String(signup));
+      byId('nameField').classList.toggle('hidden', !signup);
+      byId('confirmField').classList.toggle('hidden', !signup);
+      byId('fullName').required = signup;
+      byId('confirmPassword').required = signup;
+      byId('password').minLength = signup ? 8 : 1;
+      byId('password').autocomplete = signup ? 'new-password' : 'current-password';
+      byId('password').value = '';
+      byId('confirmPassword').value = '';
+      message.textContent = '';
+      message.classList.remove('success');
+      submitButton.textContent = signup ? 'Create Account' : 'Log In';
+    }
+    byId('loginChoice').addEventListener('click', () => setMode(false));
+    byId('signupChoice').addEventListener('click', () => setMode(true));
 
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      // Basic check: just make sure both fields have something typed in
-      if (username === '' || password === '') {
-        errorMsg.textContent = 'Please enter both a username and password.';
+    function getClient() {
+      if (SUPABASE_URL === 'YOUR_SUPABASE_PROJECT_URL' ||
+          SUPABASE_PUBLISHABLE_KEY === 'YOUR_SUPABASE_PUBLISHABLE_KEY') {
+        throw new Error('Account setup is not connected yet. Add the Supabase project URL and publishable key to login.html.');
+      }
+      if (!window.supabase) throw new Error('Unable to load the login service. Check your internet connection and refresh.');
+      if (!client) client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+      return client;
+    }
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (busy || !form.reportValidity()) return;
+      message.classList.remove('success');
+      message.textContent = '';
+      const email = byId('email').value.trim();
+      const password = byId('password').value;
+      if (creatingAccount && !byId('fullName').value.trim()) {
+        message.textContent = 'Please enter your full name.';
         return;
       }
-
-      // Redirect to the IT support / ticket tracker page
-      window.location.href = 'index.html';
+      if (creatingAccount && password !== byId('confirmPassword').value) {
+        message.textContent = 'The passwords do not match.';
+        return;
+      }
+      busy = true;
+      submitButton.disabled = true;
+      byId('loginChoice').disabled = true;
+      byId('signupChoice').disabled = true;
+      submitButton.textContent = creatingAccount ? 'Creating account...' : 'Logging in...';
+      try {
+        const auth = getClient().auth;
+        if (creatingAccount) {
+          const { data, error } = await auth.signUp({
+            email,
+            password,
+            options: {
+              data: { full_name: byId('fullName').value.trim() },
+              emailRedirectTo: new URL('login.html', window.location.href).href
+            }
+          });
+          if (error) throw error;
+          if (data.session) {
+            window.location.assign('index.html');
+            return;
+          }
+          message.classList.add('success');
+          message.textContent = 'Check your email for a confirmation link if this address is eligible to register. After confirming, return here and select Log In.';
+          byId('password').value = '';
+          byId('confirmPassword').value = '';
+        } else {
+          const { data, error } = await auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          if (!data.session) throw new Error('Login did not complete. Please try again.');
+          window.location.assign('index.html');
+        }
+      } catch (error) {
+        message.textContent = error.message || 'Unable to complete your request. Please try again.';
+      } finally {
+        busy = false;
+        submitButton.disabled = false;
+        byId('loginChoice').disabled = false;
+        byId('signupChoice').disabled = false;
+        submitButton.textContent = creatingAccount ? 'Create Account' : 'Log In';
+      }
     });
   </script>
 </body>
