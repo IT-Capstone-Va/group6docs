@@ -2,462 +2,362 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IT Help Desk - Login</title>
-
   <style>
-    :root {
-      --border: #23364d;
-      --text: #edf4fb;
-      --muted: #91a5bb;
-      --accent: #35bdf4;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 24px;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: Inter, "Segoe UI", Arial, sans-serif;
-      color: var(--text);
-      background: radial-gradient(
-        circle at top right,
-        #102a44 0,
-        #07111f 38%,
-        #050b14 100%
-      );
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #edf4fb;
+      background: radial-gradient(circle at top right, #102a44, #07111f 45%, #050b14);
     }
-
-    .login-panel {
+    .panel {
       width: 100%;
-      max-width: 400px;
+      max-width: 410px;
       padding: 32px;
-      border: 1px solid var(--border);
+      background: #0d1b2a;
+      border: 1px solid #23364d;
       border-radius: 16px;
-      background: rgba(13, 27, 42, .94);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, .25);
+      box-shadow: 0 18px 45px #0004;
     }
-
     .logo {
       width: 48px;
       height: 48px;
-      margin: 0 auto 16px;
+      margin: 0 auto 20px;
       display: grid;
       place-items: center;
       border-radius: 12px;
       background: linear-gradient(135deg, #35bdf4, #2563eb);
-      color: white;
       font-weight: 900;
     }
-
-    h1 {
-      margin: 0 0 6px;
-      text-align: center;
-      font-size: 1.3rem;
-    }
-
-    .subtitle {
-      margin: 0 0 24px;
-      text-align: center;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .choices {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
+    h1 { margin: 0 0 8px; text-align: center; font-size: 1.4rem; }
+    .subtitle { margin: 0 0 24px; text-align: center; color: #91a5bb; }
+    .choices { display: flex; gap: 8px; margin-bottom: 24px; }
     button {
       width: 100%;
-      padding: 11px 14px;
-      border: none;
+      border: 0;
       border-radius: 10px;
-      background: var(--accent);
+      padding: 12px;
+      background: #35bdf4;
       color: #05253a;
-      font-size: 1rem;
+      font: inherit;
       font-weight: 700;
       cursor: pointer;
     }
-
     .choices button {
-      border: 1px solid var(--border);
       background: #16283b;
-      color: var(--text);
-      font-size: .88rem;
+      color: #edf4fb;
+      border: 1px solid #23364d;
+      font-size: .85rem;
     }
-
     .choices button[aria-pressed="true"] {
-      background: var(--accent);
+      background: #35bdf4;
       color: #05253a;
     }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    button:focus-visible {
-      outline: 2px solid white;
-      outline-offset: 3px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    label {
-      color: #cbd9e6;
-      font-size: .8rem;
-      font-weight: 700;
-    }
-
-    input {
+    .field { display: grid; gap: 7px; margin-bottom: 18px; }
+    label { font-size: .85rem; font-weight: 700; }
+    input, select {
       width: 100%;
-      padding: 10px 11px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
+      padding: 12px;
+      border: 1px solid #23364d;
+      border-radius: 10px;
       background: #081522;
-      color: var(--text);
+      color: #edf4fb;
       font: inherit;
     }
-
-    input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(53, 189, 244, .12);
+    input:focus, select:focus {
+      outline: 2px solid #35bdf4;
+      outline-offset: 1px;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .message {
-      margin: 12px 0;
-      color: #fecdd3;
-      font-size: .85rem;
-      line-height: 1.5;
-    }
-
-    .message.success {
-      color: #bbf7d0;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: .8rem;
-      line-height: 1.5;
-    }
+    .hint { color: #91a5bb; font-size: .8rem; line-height: 1.5; }
+    .message { color: #fecdd3; font-size: .85rem; line-height: 1.5; }
+    .success { color: #bbf7d0; }
+    .hidden { display: none; }
+    button:disabled { opacity: .6; cursor: wait; }
+    button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
   </style>
 </head>
-
 <body>
-  <main class="login-panel">
+  <main class="panel">
     <div class="logo" aria-hidden="true">IT</div>
-
     <h1 id="heading">Help Desk Login</h1>
-    <p class="subtitle" id="subtitle">
-      Log in to access support
-    </p>
+    <p class="subtitle" id="subtitle">Log in to access support</p>
 
     <div class="choices" role="group" aria-label="Account options">
-      <button
-        type="button"
-        id="loginChoice"
-        aria-pressed="true"
-      >
-        Log In
-      </button>
-
-      <button
-        type="button"
-        id="signupChoice"
-        aria-pressed="false"
-      >
-        Create Account
-      </button>
+      <button id="loginChoice" type="button" aria-pressed="true">Log In</button>
+      <button id="signupChoice" type="button" aria-pressed="false">Create Account</button>
     </div>
 
-    <form id="loginForm" autocomplete="off">
-      <div class="field hidden" id="nameField">
+    <form id="accountForm" autocomplete="off">
+      <div id="nameField" class="field hidden">
         <label for="fullName">Full name</label>
-        <input
-          id="fullName"
-          type="text"
-          autocomplete="off"
-          maxlength="120"
-        >
+        <input id="fullName" autocomplete="off" maxlength="120">
       </div>
 
       <div class="field">
         <label for="email">Email address</label>
-        <input
-          id="email"
-          type="email"
-          autocomplete="off"
-          autocapitalize="none"
-          spellcheck="false"
-          placeholder="you@example.com"
-          required
-        >
+        <input id="email" type="email" autocomplete="off"
+          autocapitalize="none" spellcheck="false"
+          placeholder="you@example.com" required>
       </div>
 
       <div class="field">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          autocomplete="new-password"
-          required
-        >
+        <label for="password">Your personal password</label>
+        <input id="password" type="password"
+          autocomplete="new-password" required>
       </div>
 
-      <div class="field hidden" id="confirmField">
-        <label for="confirmPassword">Confirm password</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          autocomplete="new-password"
-        >
+      <div id="confirmField" class="field hidden">
+        <label for="confirmPassword">Confirm personal password</label>
+        <input id="confirmPassword" type="password"
+          autocomplete="new-password">
         <span class="hint">Use at least 8 characters.</span>
       </div>
 
-      <p
-        id="message"
-        class="message"
-        role="status"
-        aria-live="polite"
-      ></p>
+      <div class="field">
+        <label for="access">Account access</label>
+        <select id="access">
+          <option value="standard">Standard user</option>
+          <option value="technician">Technician</option>
+        </select>
+        <span id="accessHint" class="hint">
+          Existing technicians can sign in without entering an invitation code again.
+        </span>
+      </div>
 
-      <button type="submit" id="submitButton">Log In</button>
+      <div id="inviteField" class="field hidden">
+        <label for="invitation">Technician invitation code</label>
+        <input id="invitation" type="password" autocomplete="new-password">
+        <span id="inviteHint" class="hint"></span>
+      </div>
+
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <button id="submitButton" type="submit">Log In</button>
     </form>
 
-    <noscript>
-      <p class="message">
-        Enable JavaScript to use the login page.
-      </p>
-    </noscript>
+    <noscript>Please enable JavaScript to sign in.</noscript>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
-    // Use only a public browser key here.
-    const SUPABASE_URL =
-      'https://bngvtntshxoxbwrrucfo.supabase.co';
+    const SUPABASE_URL = 'https://bngvtntshxoxbwrrucfo.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
-
-    let client = null;
-    let creatingAccount = false;
+    const el = id => document.getElementById(id);
+    const form = el('accountForm');
+    let db;
+    let signup = false;
     let busy = false;
-
-    const byId = (id) => document.getElementById(id);
-    const form = byId('loginForm');
-    const message = byId('message');
-    const submitButton = byId('submitButton');
-
-    function clearLoginFields() {
-      form.reset();
-
-      ['fullName', 'email', 'password', 'confirmPassword'].forEach(
-        (id) => {
-          byId(id).value = '';
-        }
-      );
-    }
-
-    function setMode(signup) {
-      if (busy) return;
-
-      creatingAccount = signup;
-      clearLoginFields();
-
-      byId('heading').textContent =
-        signup ? 'Create Your Account' : 'Help Desk Login';
-
-      byId('subtitle').textContent =
-        signup
-          ? 'Register to request IT support'
-          : 'Log in to access support';
-
-      byId('loginChoice').setAttribute(
-        'aria-pressed',
-        String(!signup)
-      );
-
-      byId('signupChoice').setAttribute(
-        'aria-pressed',
-        String(signup)
-      );
-
-      byId('nameField').classList.toggle('hidden', !signup);
-      byId('confirmField').classList.toggle('hidden', !signup);
-
-      byId('fullName').required = signup;
-      byId('confirmPassword').required = signup;
-      byId('password').minLength = signup ? 8 : 1;
-
-      byId('email').autocomplete = 'off';
-      byId('password').autocomplete = 'new-password';
-
-      message.textContent = '';
-      message.classList.remove('success');
-
-      submitButton.textContent =
-        signup ? 'Create Account' : 'Log In';
-    }
-
-    byId('loginChoice').addEventListener(
-      'click',
-      () => setMode(false)
-    );
-
-    byId('signupChoice').addEventListener(
-      'click',
-      () => setMode(true)
-    );
-
-    // Clear fields on initial load and browser history navigation.
-    clearLoginFields();
-
-    window.addEventListener('pageshow', () => {
-      if (!busy) {
-        clearLoginFields();
-      }
-    });
 
     function getClient() {
       if (!window.supabase) {
-        throw new Error(
-          'Unable to load the login service. Check your internet connection and refresh.'
-        );
+        throw new Error('The login service could not load. Refresh and try again.');
       }
-
-      if (!client) {
-        client = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
+      if (!db) {
+        db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
-
-      return client;
+      return db;
     }
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
+    function clearFields() {
+      form.reset();
+      ['fullName', 'email', 'password', 'confirmPassword', 'invitation']
+        .forEach(id => { el(id).value = ''; });
+    }
 
+    function updateAccess() {
+      const technician = el('access').value === 'technician';
+      el('inviteField').classList.toggle('hidden', !technician);
+      el('invitation').required = technician && signup;
+      el('invitation').value = '';
+      el('inviteHint').textContent = signup
+        ? 'An unused invitation is required for new technician access.'
+        : 'Leave blank if your account already has technician access.';
+      el('accessHint').textContent = technician
+        ? 'Technician access is verified securely with Supabase.'
+        : 'Standard users request support and view their own tickets.';
+    }
+
+    function setMode(create) {
+      if (busy) return;
+      signup = create;
+      clearFields();
+
+      el('heading').textContent = signup
+        ? 'Create Your Account' : 'Help Desk Login';
+      el('subtitle').textContent = signup
+        ? 'Register to request IT support' : 'Log in to access support';
+      el('loginChoice').setAttribute('aria-pressed', String(!signup));
+      el('signupChoice').setAttribute('aria-pressed', String(signup));
+      el('nameField').classList.toggle('hidden', !signup);
+      el('confirmField').classList.toggle('hidden', !signup);
+      el('fullName').required = signup;
+      el('confirmPassword').required = signup;
+      el('password').minLength = signup ? 8 : 1;
+      el('submitButton').textContent = signup ? 'Create Account' : 'Log In';
+      el('message').textContent = '';
+      el('message').classList.remove('success');
+      updateAccess();
+    }
+
+    function setBusy(value) {
+      busy = value;
+      form.querySelectorAll('input, select, button').forEach(field => {
+        field.disabled = value;
+      });
+      el('loginChoice').disabled = value;
+      el('signupChoice').disabled = value;
+      el('submitButton').textContent = value
+        ? (signup ? 'Creating account...' : 'Logging in...')
+        : (signup ? 'Create Account' : 'Log In');
+    }
+
+    async function verifyTechnician(client, userId, invitation) {
+      const { data, error } = await client
+        .from('helpdesk_technicians')
+        .select('user_id')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (data) return;
+
+      if (!invitation) {
+        throw new Error(
+          'This account does not have technician access. Enter a valid invitation code or choose Standard user.'
+        );
+      }
+
+      const result = await client.rpc('redeem_technician_invite', {
+        invitation_code: invitation
+      });
+
+      if (result.error) throw result.error;
+      if (result.data !== true) {
+        throw new Error('Technician access could not be verified.');
+      }
+    }
+
+    el('loginChoice').addEventListener('click', () => setMode(false));
+    el('signupChoice').addEventListener('click', () => setMode(true));
+
+    el('access').addEventListener('change', () => {
+      updateAccess();
+      el('message').textContent = '';
+    });
+
+    window.addEventListener('pageshow', () => {
+      if (!busy) {
+        clearFields();
+        updateAccess();
+      }
+    });
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
       if (busy || !form.reportValidity()) return;
 
-      message.classList.remove('success');
-      message.textContent = '';
+      const email = el('email').value.trim();
+      const password = el('password').value;
+      const fullName = el('fullName').value.trim();
+      const invitation = el('invitation').value.trim();
+      const technician = el('access').value === 'technician';
 
-      const email = byId('email').value.trim();
-      const password = byId('password').value;
-      const fullName = byId('fullName').value.trim();
+      el('message').classList.remove('success');
 
-      if (creatingAccount && !fullName) {
-        message.textContent = 'Please enter your full name.';
+      if (signup && !fullName) {
+        el('message').textContent = 'Please enter your full name.';
+        return;
+      }
+      if (signup && password !== el('confirmPassword').value) {
+        el('message').textContent = 'The personal passwords do not match.';
         return;
       }
 
-      if (
-        creatingAccount &&
-        password !== byId('confirmPassword').value
-      ) {
-        message.textContent = 'The passwords do not match.';
-        return;
-      }
+      setBusy(true);
+      el('message').textContent = 'Connecting...';
 
-      busy = true;
-
-      submitButton.disabled = true;
-      byId('loginChoice').disabled = true;
-      byId('signupChoice').disabled = true;
-
-      submitButton.textContent =
-        creatingAccount ? 'Creating account...' : 'Logging in...';
-
-      message.textContent =
-        creatingAccount
-          ? 'Creating your account...'
-          : 'Signing you in...';
+      let client;
+      let authenticated = false;
+      let accountCreated = false;
 
       try {
-        const auth = getClient().auth;
+        client = getClient();
+        let result;
 
-        if (creatingAccount) {
-          const { data, error } = await auth.signUp({
+        if (signup) {
+          result = await client.auth.signUp({
             email,
             password,
             options: {
-              data: {
-                full_name: fullName
-              },
-              emailRedirectTo:
-                new URL('login.html', window.location.href).href
+              data: { full_name: fullName }
             }
           });
+        } else {
+          result = await client.auth.signInWithPassword({
+            email,
+            password
+          });
+        }
 
-          if (error) throw error;
+        if (result.error) throw result.error;
 
-          if (data.session) {
-            clearLoginFields();
-            window.location.assign('index.html');
+        if (!result.data.session) {
+          if (signup) {
+            clearFields();
+            updateAccess();
+            el('message').classList.add('success');
+            el('message').textContent =
+              'Registration submitted. If email confirmation is enabled, confirm your email, then log in. For technician access, select Technician and enter your invitation when logging in.';
             return;
           }
-
-          clearLoginFields();
-
-          message.classList.add('success');
-          message.textContent =
-            'Registration submitted. If email confirmation is enabled, check your email before logging in.';
-        } else {
-          const { data, error } =
-            await auth.signInWithPassword({
-              email,
-              password
-            });
-
-          if (error) throw error;
-
-          if (!data.session) {
-            throw new Error(
-              'Login did not complete. Please try again.'
-            );
-          }
-
-          clearLoginFields();
-          window.location.assign('index.html');
+          throw new Error('Sign-in did not complete. Please try again.');
         }
+
+        authenticated = true;
+        accountCreated = signup;
+
+        if (technician) {
+          await verifyTechnician(
+            client,
+            result.data.user.id,
+            invitation
+          );
+        }
+
+        clearFields();
+        window.location.assign('index.html');
       } catch (error) {
-        byId('password').value = '';
-        byId('confirmPassword').value = '';
+        let signOutError;
 
-        message.textContent =
-          error.message ||
-          'Unable to complete your request. Please try again.';
+        if (authenticated && client) {
+          const result = await client.auth.signOut({ scope: 'local' });
+          signOutError = result.error;
+        }
+
+        el('password').value = '';
+        el('confirmPassword').value = '';
+        el('invitation').value = '';
+
+        let text = error.message || 'Unable to complete your request.';
+        if (accountCreated) {
+          text += ' Your account was created with standard access. Select Log In to retry technician access or continue as a standard user.';
+        }
+        if (signOutError) {
+          text += ' The session could not be cleared. Please sign out of the tracker before retrying.';
+        }
+        el('message').textContent = text;
       } finally {
-        busy = false;
-
-        submitButton.disabled = false;
-        byId('loginChoice').disabled = false;
-        byId('signupChoice').disabled = false;
-
-        submitButton.textContent =
-          creatingAccount ? 'Create Account' : 'Log In';
+        setBusy(false);
       }
     });
+
+    setMode(false);
   </script>
 </body>
 </html>
