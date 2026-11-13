@@ -1,198 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IT Help Desk - Login</title>
   <style>
-    :root{--bg:#07111f;--panel:#0d1b2a;--border:#23364d;--text:#edf4fb;--muted:#91a5bb;--accent:#35bdf4;--shadow:0 18px 45px rgba(0,0,0,.25)}
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter,Segoe UI,Arial,sans-serif;
-      background:radial-gradient(circle at top right,#102a44 0,#07111f 38%,#050b14 100%);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    :root {
+      --bg: #07111f;
+      --panel: #0d1b2a;
+      --border: #23364d;
+      --text: #edf4fb;
+      --muted: #91a5bb;
+      --accent: #35bdf4;
     }
-    .login-panel{
-      background:rgba(13,27,42,.94);
-      border:1px solid var(--border);
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      padding:32px;
-      width:100%;
-      max-width:380px;
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(
+        circle at top right,
+        #102a44 0,
+        #07111f 38%,
+        #050b14 100%
+      );
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .logo{
-      width:48px;height:48px;border-radius:12px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg,#35bdf4,#2563eb);
-      font-weight:900;color:white;
-      margin:0 auto 16px;
+
+    .login-panel {
+      background: rgba(13, 27, 42, .94);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .25);
+      padding: 32px;
+      width: 100%;
+      max-width: 400px;
     }
-    h1{font-size:1.3rem;text-align:center;margin:0 0 6px}
-    p.subtitle{color:var(--muted);text-align:center;margin:0 0 24px;font-size:.9rem}
-    .field{display:grid;gap:6px;margin-bottom:16px}
-    .field label{font-size:.8rem;font-weight:700;color:#cbd9e6}
-    input{
-      width:100%;border:1px solid var(--border);
-      background:#081522;color:var(--text);
-      border-radius:9px;padding:10px 11px;outline:none;
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #35bdf4, #2563eb);
+      font-weight: 900;
+      color: white;
+      margin: 0 auto 16px;
     }
-    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,189,244,.12)}
-    .error{color:#fecdd3;font-size:.8rem;min-height:18px;margin-bottom:8px}
-    button{
-      width:100%;border:none;border-radius:10px;
-      padding:11px 14px;font-weight:700;font-size:1rem;
-      background:var(--accent);color:#05253a;cursor:pointer;
-      transition:.18s;
+
+    h1 {
+      font-size: 1.3rem;
+      text-align: center;
+      margin: 0 0 6px;
     }
-    button:hover{transform:translateY(-1px)}
+
+    .subtitle {
+      color: var(--muted);
+      text-align: center;
+      margin: 0 0 24px;
+      font-size: .9rem;
+    }
+
+    .choices {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      background: var(--accent);
+      color: #05253a;
+      cursor: pointer;
+    }
+
+    .choices button {
+      font-size: .88rem;
+      background: #16283b;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .choices button[aria-pressed="true"] {
+      background: var(--accent);
+      color: #05253a;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 3px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: .8rem;
+      font-weight: 700;
+      color: #cbd9e6;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #081522;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 10px 11px;
+      font: inherit;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(53, 189, 244, .12);
+    }
+
+    .hidden { display: none; }
+
+    .message {
+      font-size: .85rem;
+      line-height: 1.5;
+      margin: 12px 0;
+      color: #fecdd3;
+    }
+
+    .message.success { color: #bbf7d0; }
+
+    .hint {
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.5;
+    }
   </style>
-<style>
-body{padding:24px}.choices{display:flex;gap:8px;margin-bottom:24px}.choices button{font-size:.88rem;background:#16283b;color:var(--text);border:1px solid var(--border)}.choices button[aria-pressed="true"]{background:var(--accent);color:#05253a}.hidden{display:none}.message{font-size:.85rem;line-height:1.5;margin:12px 0;color:#fecdd3}.message.success{color:#bbf7d0}button:disabled{opacity:.6;cursor:wait}.hint{color:var(--muted);font-size:.8rem;line-height:1.5}button:focus-visible{outline:2px solid white;outline-offset:3px}
-</style></head>
+</head>
 <body>
   <main class="login-panel">
     <div class="logo" aria-hidden="true">IT</div>
     <h1 id="heading">Help Desk Login</h1>
     <p class="subtitle" id="subtitle">Log in to access support</p>
+
     <div class="choices" role="group" aria-label="Account options">
-      <button type="button" id="loginChoice" aria-pressed="true">Log In</button>
-      <button type="button" id="signupChoice" aria-pressed="false">Create Account</button>
+      <button type="button" id="loginChoice" aria-pressed="true">
+        Log In
+      </button>
+      <button type="button" id="signupChoice" aria-pressed="false">
+        Create Account
+      </button>
     </div>
-    <form id="loginForm" autocomplete="off">
+
+    <form id="loginForm">
       <div class="field hidden" id="nameField">
         <label for="fullName">Full name</label>
         <input id="fullName" autocomplete="name" maxlength="120">
       </div>
+
       <div class="field">
         <label for="email">Email address</label>
-        <input id="email" type="email" autocomplete="off" required placeholder="you@example.com">
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          required
+          placeholder="you@example.com"
+        >
       </div>
+
       <div class="field">
         <label for="password">Password</label>
-        <input id="password" type="password" autocomplete="off" required>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        >
       </div>
+
       <div class="field hidden" id="confirmField">
         <label for="confirmPassword">Confirm password</label>
-        <input id="confirmPassword" type="password" autocomplete="new-password">
+        <input
+          id="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+        >
         <span class="hint">Use at least 8 characters.</span>
       </div>
+
       <p id="message" class="message" role="status" aria-live="polite"></p>
       <button type="submit" id="submitButton">Log In</button>
     </form>
+
+    <noscript>
+      <p class="message">Enable JavaScript to use the login page.</p>
+    </noscript>
   </main>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Only use a publishable key here, never a database password or secret key.
-    const SUPABASE_URL = 'https://bngvtntshxoxbwrrucfo.supabase.co';
-    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
+    // This is a public browser key, not a database password.
+    const SUPABASE_URL =
+      'https://bngvtntshxoxbwrrucfo.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY =
+      'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
+
     let client = null;
     let creatingAccount = false;
     let busy = false;
+
     const byId = (id) => document.getElementById(id);
     const form = byId('loginForm');
     const message = byId('message');
     const submitButton = byId('submitButton');
-    // Clear browser-restored field values on load and history navigation.
+
     function clearLoginFields() {
       form.reset();
-      ['fullName', 'email', 'password', 'confirmPassword'].forEach((id) => {
-        byId(id).value = '';
-      });
+      ['fullName', 'email', 'password', 'confirmPassword'].forEach(
+        (id) => {
+          byId(id).value = '';
+        }
+      );
     }
+
     window.addEventListener('pageshow', clearLoginFields);
     clearLoginFields();
 
     function setMode(signup) {
       if (busy) return;
+
       creatingAccount = signup;
-      byId('heading').textContent = signup ? 'Create Your Account' : 'Help Desk Login';
-      byId('subtitle').textContent = signup ? 'Register to request IT support' : 'Log in to access support';
+
+      byId('heading').textContent =
+        signup ? 'Create Your Account' : 'Help Desk Login';
+
+      byId('subtitle').textContent =
+        signup ? 'Register to request IT support' : 'Log in to access support';
+
       byId('loginChoice').setAttribute('aria-pressed', String(!signup));
       byId('signupChoice').setAttribute('aria-pressed', String(signup));
+
       byId('nameField').classList.toggle('hidden', !signup);
       byId('confirmField').classList.toggle('hidden', !signup);
+
       byId('fullName').required = signup;
       byId('confirmPassword').required = signup;
       byId('password').minLength = signup ? 8 : 1;
-      byId('password').autocomplete = signup ? 'new-password' : 'off';
+      byId('password').autocomplete =
+        signup ? 'new-password' : 'current-password';
+
       byId('password').value = '';
       byId('confirmPassword').value = '';
+
       message.textContent = '';
       message.classList.remove('success');
       submitButton.textContent = signup ? 'Create Account' : 'Log In';
     }
+
     byId('loginChoice').addEventListener('click', () => setMode(false));
     byId('signupChoice').addEventListener('click', () => setMode(true));
 
     function getClient() {
-      if (SUPABASE_URL === 'YOUR_SUPABASE_PROJECT_URL' ||
-          SUPABASE_PUBLISHABLE_KEY === 'YOUR_SUPABASE_PUBLISHABLE_KEY') {
-        throw new Error('Account setup is not connected yet. Add the Supabase project URL and publishable key to login.html.');
+      if (!window.supabase) {
+        throw new Error(
+          'Unable to load the login service. Check your internet connection and refresh.'
+        );
       }
-      if (!window.supabase) throw new Error('Unable to load the login service. Check your internet connection and refresh.');
-      if (!client) client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+      if (!client) {
+        client = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+      }
+
       return client;
     }
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+
       if (busy || !form.reportValidity()) return;
+
       message.classList.remove('success');
       message.textContent = '';
+
       const email = byId('email').value.trim();
       const password = byId('password').value;
+
       if (creatingAccount && !byId('fullName').value.trim()) {
         message.textContent = 'Please enter your full name.';
         return;
       }
-      if (creatingAccount && password !== byId('confirmPassword').value) {
+
+      if (
+        creatingAccount &&
+        password !== byId('confirmPassword').value
+      ) {
         message.textContent = 'The passwords do not match.';
         return;
       }
+
       busy = true;
       submitButton.disabled = true;
       byId('loginChoice').disabled = true;
       byId('signupChoice').disabled = true;
-      submitButton.textContent = creatingAccount ? 'Creating account...' : 'Logging in...';
+
+      submitButton.textContent =
+        creatingAccount ? 'Creating account...' : 'Logging in...';
+
+      message.textContent =
+        creatingAccount ? 'Creating your account...' : 'Signing you in...';
+
       try {
         const auth = getClient().auth;
+
         if (creatingAccount) {
           const { data, error } = await auth.signUp({
             email,
             password,
             options: {
-              data: { full_name: byId('fullName').value.trim() },
-              emailRedirectTo: new URL('login.html', window.location.href).href
+              data: {
+                full_name: byId('fullName').value.trim()
+              },
+              emailRedirectTo:
+                new URL('login.html', window.location.href).href
             }
           });
+
           if (error) throw error;
+
           if (data.session) {
             window.location.assign('index.html');
             return;
           }
+
           message.classList.add('success');
-          message.textContent = 'Check your email for a confirmation link if this address is eligible to register. After confirming, return here and select Log In.';
+          message.textContent =
+            'Registration submitted. If email confirmation is enabled, check your email for a confirmation link before logging in.';
+
           byId('password').value = '';
           byId('confirmPassword').value = '';
         } else {
-          const { data, error } = await auth.signInWithPassword({ email, password });
+          const { data, error } =
+            await auth.signInWithPassword({ email, password });
+
           if (error) throw error;
-          if (!data.session) throw new Error('Login did not complete. Please try again.');
+
+          if (!data.session) {
+            throw new Error('Login did not complete. Please try again.');
+          }
+
           window.location.assign('index.html');
         }
       } catch (error) {
-        message.textContent = error.message || 'Unable to complete your request. Please try again.';
+        message.textContent =
+          error.message || 'Unable to complete your request. Please try again.';
       } finally {
         busy = false;
         submitButton.disabled = false;
         byId('loginChoice').disabled = false;
         byId('signupChoice').disabled = false;
-        submitButton.textContent = creatingAccount ? 'Create Account' : 'Log In';
+        submitButton.textContent =
+          creatingAccount ? 'Create Account' : 'Log In';
       }
     });
   </script>
