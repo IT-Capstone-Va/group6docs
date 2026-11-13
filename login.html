@@ -4,67 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IT Help Desk - Login</title>
+
   <style>
     :root {
-      --bg: #07111f;
-      --panel: #0d1b2a;
       --border: #23364d;
       --text: #edf4fb;
       --muted: #91a5bb;
       --accent: #35bdf4;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
       background: radial-gradient(
         circle at top right,
         #102a44 0,
         #07111f 38%,
         #050b14 100%
       );
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .login-panel {
-      background: rgba(13, 27, 42, .94);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, .25);
-      padding: 32px;
       width: 100%;
       max-width: 400px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(13, 27, 42, .94);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .25);
     }
 
     .logo {
       width: 48px;
       height: 48px;
-      border-radius: 12px;
+      margin: 0 auto 16px;
       display: grid;
       place-items: center;
+      border-radius: 12px;
       background: linear-gradient(135deg, #35bdf4, #2563eb);
-      font-weight: 900;
       color: white;
-      margin: 0 auto 16px;
+      font-weight: 900;
     }
 
     h1 {
-      font-size: 1.3rem;
-      text-align: center;
       margin: 0 0 6px;
+      text-align: center;
+      font-size: 1.3rem;
     }
 
     .subtitle {
-      color: var(--muted);
-      text-align: center;
       margin: 0 0 24px;
+      text-align: center;
+      color: var(--muted);
       font-size: .9rem;
     }
 
@@ -76,21 +77,21 @@
 
     button {
       width: 100%;
+      padding: 11px 14px;
       border: none;
       border-radius: 10px;
-      padding: 11px 14px;
-      font-weight: 700;
-      font-size: 1rem;
       background: var(--accent);
       color: #05253a;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
     }
 
     .choices button {
-      font-size: .88rem;
+      border: 1px solid var(--border);
       background: #16283b;
       color: var(--text);
-      border: 1px solid var(--border);
+      font-size: .88rem;
     }
 
     .choices button[aria-pressed="true"] {
@@ -114,19 +115,19 @@
       margin-bottom: 16px;
     }
 
-    .field label {
+    label {
+      color: #cbd9e6;
       font-size: .8rem;
       font-weight: 700;
-      color: #cbd9e6;
     }
 
     input {
       width: 100%;
+      padding: 10px 11px;
       border: 1px solid var(--border);
+      border-radius: 9px;
       background: #081522;
       color: var(--text);
-      border-radius: 9px;
-      padding: 10px 11px;
       font: inherit;
     }
 
@@ -136,16 +137,20 @@
       box-shadow: 0 0 0 3px rgba(53, 189, 244, .12);
     }
 
-    .hidden { display: none; }
-
-    .message {
-      font-size: .85rem;
-      line-height: 1.5;
-      margin: 12px 0;
-      color: #fecdd3;
+    .hidden {
+      display: none;
     }
 
-    .message.success { color: #bbf7d0; }
+    .message {
+      margin: 12px 0;
+      color: #fecdd3;
+      font-size: .85rem;
+      line-height: 1.5;
+    }
+
+    .message.success {
+      color: #bbf7d0;
+    }
 
     .hint {
       color: var(--muted);
@@ -154,25 +159,43 @@
     }
   </style>
 </head>
+
 <body>
   <main class="login-panel">
     <div class="logo" aria-hidden="true">IT</div>
+
     <h1 id="heading">Help Desk Login</h1>
-    <p class="subtitle" id="subtitle">Log in to access support</p>
+    <p class="subtitle" id="subtitle">
+      Log in to access support
+    </p>
 
     <div class="choices" role="group" aria-label="Account options">
-      <button type="button" id="loginChoice" aria-pressed="true">
+      <button
+        type="button"
+        id="loginChoice"
+        aria-pressed="true"
+      >
         Log In
       </button>
-      <button type="button" id="signupChoice" aria-pressed="false">
+
+      <button
+        type="button"
+        id="signupChoice"
+        aria-pressed="false"
+      >
         Create Account
       </button>
     </div>
 
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="off">
       <div class="field hidden" id="nameField">
         <label for="fullName">Full name</label>
-        <input id="fullName" autocomplete="name" maxlength="120">
+        <input
+          id="fullName"
+          type="text"
+          autocomplete="off"
+          maxlength="120"
+        >
       </div>
 
       <div class="field">
@@ -180,9 +203,11 @@
         <input
           id="email"
           type="email"
-          autocomplete="username"
-          required
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
           placeholder="you@example.com"
+          required
         >
       </div>
 
@@ -191,7 +216,7 @@
         <input
           id="password"
           type="password"
-          autocomplete="current-password"
+          autocomplete="new-password"
           required
         >
       </div>
@@ -206,20 +231,30 @@
         <span class="hint">Use at least 8 characters.</span>
       </div>
 
-      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <p
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+      ></p>
+
       <button type="submit" id="submitButton">Log In</button>
     </form>
 
     <noscript>
-      <p class="message">Enable JavaScript to use the login page.</p>
+      <p class="message">
+        Enable JavaScript to use the login page.
+      </p>
     </noscript>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
-    // This is a public browser key, not a database password.
+    // Use only a public browser key here.
     const SUPABASE_URL =
       'https://bngvtntshxoxbwrrucfo.supabase.co';
+
     const SUPABASE_PUBLISHABLE_KEY =
       'sb_publishable_k-5UUaa6YxKk5yDBTftoVA_urPj0M-6';
 
@@ -234,6 +269,7 @@
 
     function clearLoginFields() {
       form.reset();
+
       ['fullName', 'email', 'password', 'confirmPassword'].forEach(
         (id) => {
           byId(id).value = '';
@@ -241,22 +277,29 @@
       );
     }
 
-    window.addEventListener('pageshow', clearLoginFields);
-    clearLoginFields();
-
     function setMode(signup) {
       if (busy) return;
 
       creatingAccount = signup;
-clearLoginFields();
+      clearLoginFields();
+
       byId('heading').textContent =
         signup ? 'Create Your Account' : 'Help Desk Login';
 
       byId('subtitle').textContent =
-        signup ? 'Register to request IT support' : 'Log in to access support';
+        signup
+          ? 'Register to request IT support'
+          : 'Log in to access support';
 
-      byId('loginChoice').setAttribute('aria-pressed', String(!signup));
-      byId('signupChoice').setAttribute('aria-pressed', String(signup));
+      byId('loginChoice').setAttribute(
+        'aria-pressed',
+        String(!signup)
+      );
+
+      byId('signupChoice').setAttribute(
+        'aria-pressed',
+        String(signup)
+      );
 
       byId('nameField').classList.toggle('hidden', !signup);
       byId('confirmField').classList.toggle('hidden', !signup);
@@ -264,19 +307,35 @@ clearLoginFields();
       byId('fullName').required = signup;
       byId('confirmPassword').required = signup;
       byId('password').minLength = signup ? 8 : 1;
-      byId('password').autocomplete =
-        signup ? 'new-password' : 'current-password';
 
-      byId('password').value = '';
-      byId('confirmPassword').value = '';
+      byId('email').autocomplete = 'off';
+      byId('password').autocomplete = 'new-password';
 
       message.textContent = '';
       message.classList.remove('success');
-      submitButton.textContent = signup ? 'Create Account' : 'Log In';
+
+      submitButton.textContent =
+        signup ? 'Create Account' : 'Log In';
     }
 
-    byId('loginChoice').addEventListener('click', () => setMode(false));
-    byId('signupChoice').addEventListener('click', () => setMode(true));
+    byId('loginChoice').addEventListener(
+      'click',
+      () => setMode(false)
+    );
+
+    byId('signupChoice').addEventListener(
+      'click',
+      () => setMode(true)
+    );
+
+    // Clear fields on initial load and browser history navigation.
+    clearLoginFields();
+
+    window.addEventListener('pageshow', () => {
+      if (!busy) {
+        clearLoginFields();
+      }
+    });
 
     function getClient() {
       if (!window.supabase) {
@@ -305,8 +364,9 @@ clearLoginFields();
 
       const email = byId('email').value.trim();
       const password = byId('password').value;
+      const fullName = byId('fullName').value.trim();
 
-      if (creatingAccount && !byId('fullName').value.trim()) {
+      if (creatingAccount && !fullName) {
         message.textContent = 'Please enter your full name.';
         return;
       }
@@ -320,6 +380,7 @@ clearLoginFields();
       }
 
       busy = true;
+
       submitButton.disabled = true;
       byId('loginChoice').disabled = true;
       byId('signupChoice').disabled = true;
@@ -328,7 +389,9 @@ clearLoginFields();
         creatingAccount ? 'Creating account...' : 'Logging in...';
 
       message.textContent =
-        creatingAccount ? 'Creating your account...' : 'Signing you in...';
+        creatingAccount
+          ? 'Creating your account...'
+          : 'Signing you in...';
 
       try {
         const auth = getClient().auth;
@@ -339,7 +402,7 @@ clearLoginFields();
             password,
             options: {
               data: {
-                full_name: byId('fullName').value.trim()
+                full_name: fullName
               },
               emailRedirectTo:
                 new URL('login.html', window.location.href).href
@@ -349,36 +412,48 @@ clearLoginFields();
           if (error) throw error;
 
           if (data.session) {
+            clearLoginFields();
             window.location.assign('index.html');
             return;
           }
 
+          clearLoginFields();
+
           message.classList.add('success');
           message.textContent =
-            'Registration submitted. If email confirmation is enabled, check your email for a confirmation link before logging in.';
-
-          byId('password').value = '';
-          byId('confirmPassword').value = '';
+            'Registration submitted. If email confirmation is enabled, check your email before logging in.';
         } else {
           const { data, error } =
-            await auth.signInWithPassword({ email, password });
+            await auth.signInWithPassword({
+              email,
+              password
+            });
 
           if (error) throw error;
 
           if (!data.session) {
-            throw new Error('Login did not complete. Please try again.');
+            throw new Error(
+              'Login did not complete. Please try again.'
+            );
           }
 
+          clearLoginFields();
           window.location.assign('index.html');
         }
       } catch (error) {
+        byId('password').value = '';
+        byId('confirmPassword').value = '';
+
         message.textContent =
-          error.message || 'Unable to complete your request. Please try again.';
+          error.message ||
+          'Unable to complete your request. Please try again.';
       } finally {
         busy = false;
+
         submitButton.disabled = false;
         byId('loginChoice').disabled = false;
         byId('signupChoice').disabled = false;
+
         submitButton.textContent =
           creatingAccount ? 'Create Account' : 'Log In';
       }
